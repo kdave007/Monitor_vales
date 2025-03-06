@@ -11,4 +11,9 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'Monitor_vales';
+  isSidebarCollapsed = false;
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
 }
