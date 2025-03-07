@@ -7,6 +7,7 @@
         type="text" 
         placeholder="Buscar registros..." 
         class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        (input)="searchRecords($event)"
       >
       <div class="absolute left-3 top-2.5 text-gray-400">
         <mat-icon fontIcon="search"></mat-icon>
@@ -47,134 +48,61 @@
             Fecha
           </th>
           <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            Acciones
+            Ver
           </th>
         </tr>
       </thead>
       
       <!-- Table Body -->
       <tbody class="bg-white divide-y divide-gray-200">
-        <!-- Row 1 -->
-        <tr class="hover:bg-gray-50 transition-colors">
+        <!-- Dynamic rows using *ngFor -->
+        <tr *ngFor="let record of paginatedRecords" class="hover:bg-gray-50 transition-colors">
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            001
+            {{ record.folio }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            MEX-001
+            {{ record.claveSucursal }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-              Pendiente
+            <!-- Dynamic status badge with conditional styling -->
+            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-yellow-100 text-yellow-800': record.status === 'Pendiente',
+                    'bg-blue-100 text-blue-800': record.status === 'En proceso',
+                    'bg-green-100 text-green-800': record.status === 'Finalizado'
+                  }">
+              {{ record.status }}
             </span>
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            Solicitud de apoyo
+            {{ record.detalle }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            2022-01-01
+            {{ record.fecha }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <button class="text-indigo-600 hover:text-indigo-900 mr-3">
+            <button class="text-indigo-600 hover:text-indigo-900 mr-3" (click)="viewRecord(record.folio)">
               <mat-icon fontIcon="visibility"></mat-icon>
             </button>
-            <button class="text-blue-600 hover:text-blue-900">
-              <mat-icon fontIcon="edit"></mat-icon>
-            </button>
+            
           </td>
         </tr>
-        
-        <!-- Row 2 -->
-        <tr class="hover:bg-gray-50 transition-colors">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            002
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            MEX-002
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-              En proceso
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            Apoyo en curso
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            2022-01-05
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <button class="text-indigo-600 hover:text-indigo-900 mr-3">
-              <mat-icon fontIcon="visibility"></mat-icon>
-            </button>
-            <button class="text-blue-600 hover:text-blue-900">
-              <mat-icon fontIcon="edit"></mat-icon>
-            </button>
-          </td>
-        </tr>
-        
-        <!-- Row 3 -->
-        <tr class="hover:bg-gray-50 transition-colors">
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-            003
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            MEX-003
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-              Finalizado
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            Apoyo finalizado
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            2022-01-10
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <button class="text-indigo-600 hover:text-indigo-900 mr-3">
-              <mat-icon fontIcon="visibility"></mat-icon>
-            </button>
-            <button class="text-blue-600 hover:text-blue-900">
-              <mat-icon fontIcon="edit"></mat-icon>
-            </button>
+
+        <!-- Empty state when no records -->
+        <tr *ngIf="filteredRecords.length === 0">
+          <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+            No se encontraron registros
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   
-  <!-- Pagination -->
-  <div class="flex items-center justify-between mt-4 px-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    <div class="flex-1 flex justify-between sm:hidden">
-      <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        Anterior
-      </button>
-      <button class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-        Siguiente
-      </button>
-    </div>
-    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-      <div>
-        <p class="text-sm text-gray-700">
-          Mostrando <span class="font-medium">1</span> a <span class="font-medium">3</span> de <span class="font-medium">3</span> resultados
-        </p>
-      </div>
-      <div>
-        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-            <span class="sr-only">Anterior</span>
-            <mat-icon fontIcon="chevron_left"></mat-icon>
-          </button>
-          <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-            1
-          </button>
-          <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-            <span class="sr-only">Siguiente</span>
-            <mat-icon fontIcon="chevron_right"></mat-icon>
-          </button>
-        </nav>
-      </div>
-    </div>
-  </div>
+  <!-- Use the pagination component -->
+  <app-pagination
+    [totalItems]="filteredRecords.length"
+    [itemsPerPage]="itemsPerPage"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>
