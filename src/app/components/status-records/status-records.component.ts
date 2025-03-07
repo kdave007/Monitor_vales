@@ -6,6 +6,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PaginationComponent } from '../pagination/pagination.component';
 
+// Define the record type
+interface Record {
+  folio: string;
+  claveSucursal: string;
+  status: string;
+  detalle: string;
+  fecha: string;
+}
+
+// Define the sort direction type
+type SortDirection = 'asc' | 'desc';
+
 @Component({
   selector: 'app-status-records',
   standalone: true,
@@ -22,7 +34,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 })
 export class RecordsStatusComponent {
   // All records
-  records = [
+  records: Record[] = [
     {
       folio: '001',
       claveSucursal: 'MEX-001',
@@ -166,13 +178,19 @@ export class RecordsStatusComponent {
   ];
 
   // Pagination properties
-  filteredRecords = [...this.records];
-  paginatedRecords: any[] = [];
+  filteredRecords: Record[] = [];
+  paginatedRecords: Record[] = [];
   currentPage = 1;
   itemsPerPage = 8;
   searchTerm = '';
 
+  // Sorting properties
+  sortColumn: keyof Record = 'folio';
+  sortDirection: SortDirection = 'asc';
+
   constructor() {
+    this.filteredRecords = [...this.records];
+    this.sortRecords('folio'); // Initial sort
     this.updatePaginatedRecords();
   }
 
@@ -192,7 +210,58 @@ export class RecordsStatusComponent {
       record.detalle.toLowerCase().includes(this.searchTerm)
     );
     this.currentPage = 1; // Reset to first page after search
+    this.applySort(); // Apply current sort to filtered records
     this.updatePaginatedRecords();
+  }
+
+  // Sort records by column
+  sortRecords(column: keyof Record): void {
+    // If clicking the same column, toggle direction
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      // If clicking a new column, set it as the sort column with ascending direction
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    
+    this.applySort();
+    this.updatePaginatedRecords();
+  }
+
+  // Apply current sort settings to filtered records
+  private applySort(): void {
+    this.filteredRecords.sort((a, b) => {
+      const valueA = a[this.sortColumn].toLowerCase();
+      const valueB = b[this.sortColumn].toLowerCase();
+      
+      // Special handling for date columns
+      if (this.sortColumn === 'fecha') {
+        const dateA = new Date(valueA);
+        const dateB = new Date(valueB);
+        return this.sortDirection === 'asc' 
+          ? dateA.getTime() - dateB.getTime() 
+          : dateB.getTime() - dateA.getTime();
+      }
+      
+      // For numeric folio values, convert to numbers for proper sorting
+      if (this.sortColumn === 'folio') {
+        const numA = parseInt(valueA, 10);
+        const numB = parseInt(valueB, 10);
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return this.sortDirection === 'asc' ? numA - numB : numB - numA;
+        }
+      }
+      
+      // Default string comparison
+      if (valueA < valueB) {
+        return this.sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valueA > valueB) {
+        return this.sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
   }
 
   // Update the records to display based on current page
@@ -209,10 +278,5 @@ export class RecordsStatusComponent {
     console.log(`Viewing record: ${folio}`);
     // Implement view logic
   }
-
-  // Edit record
-  editRecord(folio: string): void {
-    console.log(`Editing record: ${folio}`);
-    // Implement edit logic
-  }
+  
 }
