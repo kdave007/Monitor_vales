@@ -1,8 +1,8 @@
 <!-- Popup Overlay - Only shown when showDetailsWindow is true -->
-<div  class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+<div  class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center ">
   
   <!-- Popup Window -->
-  <div class="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 z-50 relative">
+  <div [style.margin-left]="popupMarginLeft" class="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 z-50 relative ">
     
     <!-- Close Button - Top Right Corner -->
     <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700" (click)=" onClose()">
