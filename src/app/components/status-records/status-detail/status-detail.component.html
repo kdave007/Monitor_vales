@@ -1,0 +1,66 @@
+<!-- Popup Overlay - Only shown when showDetailsWindow is true -->
+<div  class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+  
+  <!-- Popup Window -->
+  <div class="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full mx-4 z-50 relative">
+    
+    <!-- Close Button - Top Right Corner -->
+    <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-700" (click)=" onClose()">
+      <mat-icon fontIcon="close"></mat-icon>
+    </button>
+    
+    <!-- Popup Header -->
+    <div class="mb-4 pb-3 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-800">Detalles del Registro</h2>
+      <p class="text-sm text-gray-500">Folio: {{ selectedRecord.folio }}</p>
+    </div>
+    
+    <!-- Popup Content -->
+    <div class="space-y-4">
+      <!-- You can add your record details here -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Clave Sucursal</p>
+          <p class="mt-1">{{ selectedRecord.claveSucursal }}</p>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-500">Status</p>
+          <p class="mt-1">
+            <span class="px-2 py-1 text-xs font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-yellow-100 text-yellow-800': selectedRecord.status === 'Pendiente',
+                    'bg-blue-100 text-blue-800': selectedRecord.status === 'En proceso',
+                    'bg-green-100 text-green-800': selectedRecord.status === 'Finalizado'
+                  }">
+              {{ selectedRecord.status }}
+            </span>
+          </p>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-500">Fecha</p>
+          <p class="mt-1">{{ selectedRecord.fecha }}</p>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-500">Detalle</p>
+          <p class="mt-1">{{ selectedRecord.detalle }}</p>
+        </div>
+      </div>
+      
+      <!-- Additional Information Section -->
+      <div class="mt-6">
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Información Adicional</h3>
+        <p class="text-gray-600">
+          Aquí puede ir información adicional sobre el registro seleccionado.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Popup Footer with Actions -->
+    <div class="mt-8 pt-4 border-t border-gray-200 flex justify-end space-x-3">
+      <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors" 
+              (click)=" onClose()">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>

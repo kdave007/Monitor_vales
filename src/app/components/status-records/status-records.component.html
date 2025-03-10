@@ -111,7 +111,7 @@
             {{ record.fecha }}
           </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <button class="text-indigo-600 hover:text-indigo-900 mr-3" (click)="viewRecord(record.folio)">
+            <button class="text-indigo-600 hover:text-indigo-900 mr-3" (click)="viewRecord(record)">
               <mat-icon fontIcon="visibility"></mat-icon>
             </button>
             
@@ -135,4 +135,14 @@
     [currentPage]="currentPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
+
+  <app-status-detail 
+    *ngIf="showDetailsWindow"
+    [selectedRecord]="selectedRecord"
+    (close)="closeDetailsWindow()"
+   >
+  </app-status-detail>
+
+
+
 </div>

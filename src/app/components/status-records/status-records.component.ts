@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { PaginationComponent } from '../pagination/pagination.component';
+import { StatusDetailComponent } from './status-detail/status-detail.component'
 
 // Define the record type
 interface Record {
@@ -27,12 +28,14 @@ type SortDirection = 'asc' | 'desc';
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    PaginationComponent
+    PaginationComponent,
+    StatusDetailComponent
   ],
   templateUrl: './status-records.component.html',
   styleUrls: ['./status-records.component.scss']
 })
 export class RecordsStatusComponent {
+
   // All records
   records: Record[] = [
     {
@@ -188,6 +191,10 @@ export class RecordsStatusComponent {
   sortColumn: keyof Record = 'folio';
   sortDirection: SortDirection = 'asc';
 
+  showDetailsWindow = false;
+  selectedRecord: any;
+
+
   constructor() {
     this.filteredRecords = [...this.records];
     this.sortRecords('folio'); // Initial sort
@@ -274,9 +281,15 @@ export class RecordsStatusComponent {
   }
 
   // View record details
-  viewRecord(folio: string): void {
-    console.log(`Viewing record: ${folio}`);
-    // Implement view logic
+  viewRecord(record : any): void {
+    console.log("Viewing record: ",record);
+    this.showDetailsWindow = true;
+    this.selectedRecord = record;
+  }
+
+  closeDetailsWindow() {
+    this.showDetailsWindow = false;
+    this.selectedRecord = null;
   }
   
 }
