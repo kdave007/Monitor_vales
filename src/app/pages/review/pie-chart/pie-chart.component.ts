@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import ApexCharts from 'apexcharts';
 
 @Component({
@@ -8,24 +8,49 @@ import ApexCharts from 'apexcharts';
   templateUrl: './pie-chart.component.html',
   styleUrl: './pie-chart.component.scss'
 })
-export class PieChartComponent implements OnInit{
-  ngOnInit(): void {
+export class PieChartComponent implements OnInit, AfterViewInit {
+  @Input() chartId: string = 'chart';
+  
+  ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
     this.initializeChart();
   }
 
   private initializeChart(): void {
     const options = {
       chart: {
-        type: 'donut'
+        type: 'donut',
+        height: 450,
+        width: '90%'
       },
-      series: [44, 55, 13, 33],
-      labels: ['En proceso', 'Descargado', 'Entregado', 'Afectado']
+      series: [44, 27],
+      labels: ['En proceso', 'Descargado'],
+      legend: {
+        position: 'right',
+        offsetY: 0,
+        fontSize: '16px'
+      },
+    
+      dataLabels: {
+        style: {
+          fontSize: '16px'  // Increased font size
+        }
+      },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            height: 500
+          },
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }]
     }
-
-   
     
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
-    
+    let chart = new ApexCharts(document.querySelector('#'+this.chartId), options);
     chart.render();
   }
 }

@@ -1,0 +1,65 @@
+:host ::ng-deep {
+  .mat-mdc-tab-body-content {
+    @apply p-4;
+  }
+  
+  app-pie-chart, app-bar-chart {
+    @apply block mx-auto;
+  }
+
+  .mat-mdc-tab-group {
+    @apply bg-white rounded-lg;
+  }
+
+  // Material Design tab styles
+  .mat-mdc-tab-header {
+    border-bottom: 2px solid #BBDEFB !important; // Material Blue 100
+
+    .mat-mdc-tab:not(.mdc-tab--active) {
+      @apply text-gray-600;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        
+        color: #1976D2 !important; // Material Blue 700
+      }
+
+      .mat-icon {
+        @apply opacity-60;
+      }
+    }
+  }
+
+  // Active tab styles
+  .mdc-tab--active {
+    .mdc-tab__text-label {
+      color: #1976D2 !important; // Material Blue 700
+      font-weight:bold;
+    }
+    
+    .mat-icon {
+      color: #1976D2 !important; // Material Blue 700
+    }
+  }
+
+  // Tab indicator styles
+  .mdc-tab-indicator {
+    .mdc-tab-indicator__content--underline {
+      border-color: #1976D2 !important; // Material Blue 700
+      border-top-width: 2px;
+    }
+  }
+
+  // Smooth transitions
+  .mat-mdc-tab {
+    transition: background-color 0.2s ease;
+    
+    .mat-icon {
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
+  }
+
+  .mat-mdc-tab-body {
+    @apply p-4;
+  }
+}
