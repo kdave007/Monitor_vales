@@ -24,8 +24,8 @@ export class PieChartComponent implements OnInit, AfterViewInit {
         height: 450,
         width: '90%'
       },
-      series: [44, 27],
-      labels: ['En proceso', 'Descargado'],
+      series: [44, 27, 33],
+      labels: ['En proceso', 'Descargado','Afectado'],
       legend: {
         position: 'right',
         offsetY: 0,
