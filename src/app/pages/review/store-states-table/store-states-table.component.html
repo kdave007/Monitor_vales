@@ -1,0 +1,76 @@
+<div class="p-4">
+    <!-- Search input -->
+    <div class="mb-4">
+        <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Buscar sucursal..."
+            class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+        >
+    </div>
+
+    <div class="overflow-hidden rounded-xl border border-gray-200 shadow">
+        <table class="min-w-full divide-y divide-gray-200">
+            <!-- Header -->
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" 
+                        class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-r cursor-pointer hover:bg-gray-100"
+                        (click)="sort('sucursal')">
+                        Sucursal {{getSortIcon('sucursal')}}
+                    </th>
+                    <th scope="col" 
+                        class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r cursor-pointer hover:bg-gray-100"
+                        (click)="sort('estado1')">
+                        Estado 1 {{getSortIcon('estado1')}}
+                    </th>
+                    <th scope="col" 
+                        class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r cursor-pointer hover:bg-gray-100"
+                        (click)="sort('estado2')">
+                        Estado 2 {{getSortIcon('estado2')}}
+                    </th>
+                    <th scope="col" 
+                        class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r cursor-pointer hover:bg-gray-100"
+                        (click)="sort('estado3')">
+                        Estado 3 {{getSortIcon('estado3')}}
+                    </th>
+                    <th scope="col" 
+                        class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                        (click)="sort('total')">
+                        Total {{getSortIcon('total')}}
+                    </th>
+                </tr>
+            </thead>
+            <!-- Body -->
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr *ngFor="let row of paginatedData; let i = index" 
+                    [class.bg-gray-50]="i % 2 === 1"
+                    class="hover:bg-blue-50 transition-colors duration-150 ease-in-out">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+                        {{row.sucursal}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 border-r">
+                        {{row.estado1 || ''}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 border-r">
+                        {{row.estado2 || ''}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 border-r">
+                        {{row.estado3 || ''}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-semibold text-gray-700">
+                        {{row.total}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination
+        [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        [currentPage]="currentPage"
+        (pageChange)="onPageChange($event)">
+    </app-pagination>
+</div>

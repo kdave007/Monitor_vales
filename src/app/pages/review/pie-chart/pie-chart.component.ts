@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import ApexCharts from 'apexcharts';
 
+
+
 @Component({
   selector: 'app-pie-chart',
   standalone: true,
@@ -10,6 +12,7 @@ import ApexCharts from 'apexcharts';
 })
 export class PieChartComponent implements OnInit, AfterViewInit {
   @Input() chartId: string = 'chart';
+  
   
   ngOnInit(): void {}
 

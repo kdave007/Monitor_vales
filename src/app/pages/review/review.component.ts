@@ -4,6 +4,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { StoreStatesTableComponent } from './store-states-table/store-states-table.component';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
     PieChartComponent,
     MatTabsModule,
     FormsModule,
-    BarChartComponent
+    StoreStatesTableComponent
   ],
   templateUrl: './review.component.html',
   styleUrl: './review.component.scss'
