@@ -14,28 +14,18 @@
 
 <!-- Main container -->
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 pt-[2.5rem] pb-[2.5rem]">
-  <div class="bg-white rounded-lg shadow-2xl p-8 max-w-6xl w-full h-[675px]">
+  <div class="bg-white rounded-lg shadow-2xl p-8 max-w-6xl w-full ">
     <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">Estadística</h1>
     <p class="text-blue-600 mb-6 text-center"></p>
   
-    <mat-tab-group>
-
-      <mat-tab label="Descargados">
-        <ng-template matTabContent>
           <div >
             <app-pie-chart chartId="Descargados"></app-pie-chart>
           </div>
-        </ng-template>
-      </mat-tab>
 
-      <mat-tab label="Traspasos">
-        <ng-template matTabContent>
+           
           <div >
             <app-bar-chart chartId="Traspasos"></app-bar-chart>
           </div>
-        </ng-template>
-      </mat-tab>
-      
-    </mat-tab-group>
+        
   </div>
 </div>
