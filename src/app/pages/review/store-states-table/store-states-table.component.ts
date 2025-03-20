@@ -79,7 +79,7 @@ export class StoreStatesTableComponent {
   }
 
   getSortIcon(column: keyof TableRow): string {
-    if (this.sortColumn !== column) return '↕️';
+    if (this.sortColumn !== column) return '';
     return this.sortDirection === 'asc' ? '↑' : '↓';
   }
 

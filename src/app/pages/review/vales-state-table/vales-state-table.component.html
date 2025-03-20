@@ -1,0 +1,47 @@
+<div class="mx-auto overflow-hidden rounded-xl border border-gray-200 shadow w-3/4">
+    <table class="min-w-full divide-y divide-gray-200">
+        <!-- Header -->
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-r">
+                    Estado
+                </th>
+                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider border-r">
+                    Sucursal Origen
+                </th>
+                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 uppercase tracking-wider">
+                    Sucursal Destino
+                </th>
+            </tr>
+        </thead>
+        <!-- Body -->
+        <tbody class="bg-white divide-y divide-gray-200">
+            <!-- Dynamic rows -->
+            <tr *ngFor="let row of tableData; let i = index" 
+                [class.bg-gray-50]="i % 2 === 1"
+                class="hover:bg-blue-50 transition-colors duration-150 ease-in-out">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-r">
+                    {{row.estado}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500 border-r">
+                    {{row.sucursalOrigen}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                    {{row.sucursalDestino}}
+                </td>
+            </tr>
+            <!-- Total row -->
+            <tr class="bg-gray-100 font-semibold">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-r">
+                    {{totalRow.estado}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900 border-r">
+                    {{totalRow.sucursalOrigen}}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-900">
+                    {{totalRow.sucursalDestino}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

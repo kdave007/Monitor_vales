@@ -14,18 +14,36 @@
 
 <!-- Main container -->
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 pt-[2.5rem] pb-[2.5rem]">
-  <div class="bg-white rounded-lg shadow-2xl p-8 max-w-6xl w-full ">
-    <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">Estadística</h1>
-    <p class="text-blue-600 mb-6 text-center"></p>
-  
-          <div >
-            <app-pie-chart chartId="Descargados"></app-pie-chart>
-          </div>
+  <div class="bg-white rounded-lg shadow-2xl p-8 max-w-6xl w-full">
+    <!-- Main Title with decorative elements -->
+    <div class="relative pb-8 mb-6 border-b border-gray-200">
+      <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 text-center">
+        Vales
+      </h1>
+      <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
+    </div>
 
-           
-          <div >
-            <app-store-states-table/>
-          </div>
-        
+    <!-- General Section -->
+    <div class="mb-12">
+      <div class="flex items-center mb-6">
+        <div class="flex-shrink-0 w-1.5 h-8 bg-blue-500 rounded-r mr-4"></div>
+        <h2 class="text-2xl font-bold text-gray-800">General</h2>
+      </div>
+      <app-pie-chart chartId="Descargados"></app-pie-chart>
+    </div>
+
+    <!-- Table Section -->
+    <div class="mb-12">
+      <app-vales-state-table/>
+    </div>
+
+    <!-- Store Section -->
+    <div class="mb-8">
+      <div class="flex items-center mb-6">
+        <div class="flex-shrink-0 w-1.5 h-8 bg-indigo-500 rounded-r mr-4"></div>
+        <h2 class="text-2xl font-bold text-gray-800">Vales por sucursal</h2>
+      </div>
+      <app-store-states-table/>
+    </div>
   </div>
 </div>
