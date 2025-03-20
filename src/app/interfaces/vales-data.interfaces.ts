@@ -1,0 +1,48 @@
+// Basic Vale record
+export interface ValesStates {
+    id: number;
+    estado: 'En Progreso' | 'Descargado' | 'Afectado';
+    sucursalOrigen: string;
+    sucursalDestino: string;
+    fecha: string;
+}
+
+// Pie Chart Statistics
+export interface ChartStatistics {
+    enProgreso: number;
+    descargados: number;
+    afectados: number;
+    total: number;
+}
+
+// Table Statistics per Store
+export interface StoreStatistics {
+    sucursal: string;
+    estado1: number;  // En Progreso
+    estado2: number;  // Descargado
+    estado3: number;  // Afectado
+    total: number;
+}
+
+// Summary Statistics
+export interface StateSummary {
+    totalVales: number;
+    porEstado: ChartStatistics;
+    porSucursal: StoreStatistics[];
+}
+
+// API Response wrapper
+export interface ApiResponse<T> {
+    success: boolean;
+    data: T;
+    error?: string;
+    timestamp: string;
+}
+
+// State filter type
+export interface StateFilter {
+    id: number;
+    name: string;
+    startDate?: string;
+    endDate?: string;
+}
