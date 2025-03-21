@@ -4,7 +4,7 @@ import ApexCharts from 'apexcharts';
 import { ChartStatistics } from '../../../interfaces/vales-data.interfaces';
 import { ValesDataService } from '../../../services/vales-data.service';
 import { StateManagerService } from '../../../services/state-manager.service';
-import { Subject, takeUntil } from 'rxjs';
+import { startWith, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pie-chart',
@@ -48,7 +48,10 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private subscribeToStateChanges(): void {
     this.stateManager.currentState$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        startWith({ id: 1, name: 'Jalisco' } as any),
+        takeUntil(this.destroy$)
+      )
       .subscribe(state => {
         if (state) {
           this.valesService.getStateData({ 
@@ -59,6 +62,7 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe(response => {
             if (response.success && response.data) {
               this.chartData = response.data.porEstado;
+              console.log('Checkpoint');
               this.updateChartData();
             }
           });
