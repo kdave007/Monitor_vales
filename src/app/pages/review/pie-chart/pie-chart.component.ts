@@ -15,6 +15,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class PieChartComponent implements OnInit, OnDestroy {
   @Input() chartId: string = 'chart';
+  @Input() initialData?: ChartStatistics;
   
   private chart?: ApexCharts;
   private destroy$ = new Subject<void>();
@@ -32,6 +33,12 @@ export class PieChartComponent implements OnInit, OnDestroy {
   ) {}
   
   ngOnInit(): void {
+    // Initialize with data if available
+    if (this.initialData) {
+      this.chartData = this.initialData;
+      this.initializeChart();
+      this.chartInitialized = true;
+    }
     this.subscribeToStateChanges();
   }
 
@@ -78,8 +85,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
         width: '90%',
         animations: {
           enabled: true,
-          easing: 'easeinout',
-          speed: 800,
+          speed: 500,
           animateGradually: {
             enabled: true,
             delay: 150
@@ -90,55 +96,25 @@ export class PieChartComponent implements OnInit, OnDestroy {
           }
         }
       },
-      series: this.getSeriesData(),
-      labels: ['En progreso', 'Descargado', 'Afectado'],
+      series: [this.chartData.enProgreso, this.chartData.descargados, this.chartData.afectados],
+      labels: ['En Progreso', 'Descargados', 'Afectados'],
       colors: ['#3B82F6', '#22C55E', '#F59E0B'],
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '65%'
-          }
-        }
-      },
-      dataLabels: {
-        enabled: true,
-        formatter: function (val: number) {
-          return val.toFixed(1) + '%';
-        }
-      },
       legend: {
-        position: 'right',
-        offsetY: 20,
-        fontSize: '14px'
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 320
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }]
+        position: 'right'
+      }
     };
 
-    this.chart = new ApexCharts(document.querySelector(`#${this.chartId}`), options);
+    this.chart = new ApexCharts(document.getElementById(this.chartId), options);
     this.chart.render();
   }
 
   private updateChartData(): void {
     if (this.chart) {
-      this.chart.updateSeries(this.getSeriesData());
+      this.chart.updateSeries([
+        this.chartData.enProgreso,
+        this.chartData.descargados,
+        this.chartData.afectados
+      ]);
     }
-  }
-
-  private getSeriesData(): number[] {
-    return [
-      this.chartData.enProgreso,
-      this.chartData.descargados,
-      this.chartData.afectados
-    ];
   }
 }

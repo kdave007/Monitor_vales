@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainComponent } from './pages/main/main.component';
 import { ReviewComponent } from './pages/review/review.component';
+import { reviewResolver } from './pages/review/resolver/review.resolver';
 
 export const routes: Routes = [
     {
@@ -11,11 +12,14 @@ export const routes: Routes = [
     {
         path: 'main', 
         component: MainComponent,
-        title: 'Principal' // Optional: Set page title
+        title: 'Principal'
     },
     {
         path: 'review', 
         component: ReviewComponent,
-        title: 'Reportes' // Optional: Set page title
+        title: 'Reportes',
+        resolve: {
+            data: reviewResolver
+        }
     }
 ];

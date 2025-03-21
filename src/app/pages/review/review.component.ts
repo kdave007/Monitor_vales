@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -8,8 +8,7 @@ import { ValesStateTableComponent } from './vales-state-table/vales-state-table.
 import { StateManagerService } from '../../services/state-manager.service';
 import { ValesDataService } from '../../services/vales-data.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-review',
@@ -20,15 +19,12 @@ import { firstValueFrom } from 'rxjs';
     MatTabsModule,
     FormsModule,
     StoreStatesTableComponent,
-    ValesStateTableComponent,
-    MatProgressSpinnerModule
+    ValesStateTableComponent
   ],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
 })
-export class ReviewComponent {
-  isLoading = false;  
-
+export class ReviewComponent implements OnInit {
   states = [
     { id: 1, name: 'Jalisco' },
     { id: 2, name: 'Ciudad de México' },
@@ -39,13 +35,18 @@ export class ReviewComponent {
   stateData: StateSummary | null = null;
 
   constructor(
+    private route: ActivatedRoute,
     private stateManager: StateManagerService,
     private valesData: ValesDataService
-  ) {
-    // Inicializar con Jalisco
-    const initialState = this.states[0]; // Jalisco
-    this.stateManager.updateState(initialState);
-    this.loadStateData();
+  ) {}
+
+  ngOnInit() {
+    // Get initial data from resolver
+    const resolvedData = this.route.snapshot.data['data'];
+    if (resolvedData.initialState.success) {
+      this.stateData = resolvedData.initialState.data;
+      this.stateManager.updateState(this.states[0]);
+    }
   }
 
   onStateChange(event: any) {
@@ -57,22 +58,19 @@ export class ReviewComponent {
     }
   }
 
-  async loadStateData() {
-    this.isLoading = true;
-    try {
-      const selectedState = this.states.find(state => state.id === this.selectedStateId);
-      if (selectedState) {
-        this.stateManager.updateState(selectedState);
-        const response = await firstValueFrom(this.valesData.getStateData({ 
-          id: selectedState.id, 
-          name: selectedState.name 
-        }));
-        if (response?.success) {
-          this.stateData = response.data;
+  private loadStateData() {
+    const currentState = this.currentState;
+    if (currentState) {
+      this.valesData.getStateData({ 
+        id: currentState.id, 
+        name: currentState.name
+      }).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.stateData = response.data;
+          }
         }
-      }
-    } finally {
-      this.isLoading = false;
+      });
     }
   }
 
