@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import ApexCharts from 'apexcharts';
 import { ChartStatistics } from '../../../interfaces/vales-data.interfaces';
 import { ValesDataService } from '../../../services/vales-data.service';
@@ -9,7 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-pie-chart',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressSpinnerModule],
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss']
 })
@@ -17,6 +18,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
   @Input() chartId: string = 'chart';
   @Input() initialData?: ChartStatistics;
   
+  isLoading = true;
   private chart?: ApexCharts;
   private destroy$ = new Subject<void>();
   private chartData: ChartStatistics = {
@@ -34,11 +36,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     // Initialize with data if available
-    if (this.initialData) {
-      this.chartData = this.initialData;
-      this.initializeChart();
-      this.chartInitialized = true;
-    }
+  
     this.subscribeToStateChanges();
   }
 
@@ -71,6 +69,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
               } else {
                 this.updateChartData();
               }
+              this.isLoading = false;
             }
           });
         }
