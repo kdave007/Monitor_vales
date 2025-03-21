@@ -8,6 +8,8 @@ import { ValesStateTableComponent } from './vales-state-table/vales-state-table.
 import { StateManagerService } from '../../services/state-manager.service';
 import { ValesDataService } from '../../services/vales-data.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-review',
@@ -18,12 +20,15 @@ import { StateSummary } from '../../interfaces/vales-data.interfaces';
     MatTabsModule,
     FormsModule,
     StoreStatesTableComponent,
-    ValesStateTableComponent
+    ValesStateTableComponent,
+    MatProgressSpinnerModule
   ],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
 })
 export class ReviewComponent {
+  isLoading = false;  
+
   states = [
     { id: 1, name: 'Jalisco' },
     { id: 2, name: 'Ciudad de México' },
@@ -37,6 +42,9 @@ export class ReviewComponent {
     private stateManager: StateManagerService,
     private valesData: ValesDataService
   ) {
+    // Inicializar con Jalisco
+    const initialState = this.states[0]; // Jalisco
+    this.stateManager.updateState(initialState);
     this.loadStateData();
   }
 
@@ -49,15 +57,23 @@ export class ReviewComponent {
     }
   }
 
-  private loadStateData() {
-    this.valesData.getStateData({ 
-      id: this.selectedStateId, 
-      name: this.currentState?.name || '' 
-    }).subscribe(response => {
-      if (response.success) {
-        this.stateData = response.data;
+  async loadStateData() {
+    this.isLoading = true;
+    try {
+      const selectedState = this.states.find(state => state.id === this.selectedStateId);
+      if (selectedState) {
+        this.stateManager.updateState(selectedState);
+        const response = await firstValueFrom(this.valesData.getStateData({ 
+          id: selectedState.id, 
+          name: selectedState.name 
+        }));
+        if (response?.success) {
+          this.stateData = response.data;
+        }
       }
-    });
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   get currentState() {

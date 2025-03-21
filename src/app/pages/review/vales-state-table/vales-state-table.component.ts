@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StateManagerService } from '../../../services/state-manager.service';
+import { startWith, Subject, takeUntil } from 'rxjs';
+import { ValesStateTableService } from '../../../services/vales-state-table.service';
+
 
 interface TableRow {
   estado: string;
@@ -15,13 +19,27 @@ interface TableRow {
   templateUrl: './vales-state-table.component.html',
   styleUrls: ['./vales-state-table.component.scss']
 })
-export class ValesStateTableComponent {
+export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestroy {
   // Sample data
-  tableData: TableRow[] = [
-    { estado: 'En Progreso', sucursalOrigen: '32', sucursalDestino: '32', count: 32 },
-    { estado: 'Descargado', sucursalOrigen: '26', sucursalDestino: '26', count: 26 },
-    { estado: 'Afectado', sucursalOrigen: '125', sucursalDestino: '125', count: 125 }
-  ];
+  tableData: TableRow[] = [];
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    private valesStateTable: ValesStateTableService,
+    private stateManager: StateManagerService
+  ){}
+
+  ngOnInit(): void {
+    this.stateDataSuscription();
+  }
+  ngAfterViewInit(): void {
+    
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   // Calculate totals
   get totalRow(): TableRow {
@@ -32,4 +50,29 @@ export class ValesStateTableComponent {
       count: this.tableData.reduce((sum, row) => sum + row.count, 0)
     };
   }
+
+
+  private stateDataSuscription(){
+    this.stateManager.currentState$
+    .pipe(
+      //startWith({ id: 1, name: 'Jalisco' }),
+      takeUntil(this.destroy$)
+    )
+    .subscribe( state => {
+      console.log('vales table ',state)
+      if(state){
+        this.valesStateTable.getStateData(state.id)
+        .pipe(
+          takeUntil(this.destroy$)
+        )
+        .subscribe( response => {
+          if(response.success) {
+            this.tableData = response.data;
+            console.log(response.data)
+          }
+        });
+      }
+    });
+  }
+
 }

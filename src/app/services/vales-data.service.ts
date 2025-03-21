@@ -16,30 +16,7 @@ export class ValesDataService {
         descargados: 26,
         afectados: 125,
         total: 183
-      },
-      porSucursal: [
-        {
-          sucursal: "Sucursal A",
-          estado1: 10,
-          estado2: 8,
-          estado3: 42,
-          total: 60
-        },
-        {
-          sucursal: "Sucursal B",
-          estado1: 12,
-          estado2: 10,
-          estado3: 43,
-          total: 65
-        },
-        {
-          sucursal: "Sucursal C",
-          estado1: 10,
-          estado2: 8,
-          estado3: 40,
-          total: 58
-        }
-      ]
+      }
     },
     2: { // Ciudad de México
       totalVales: 150,
@@ -48,30 +25,7 @@ export class ValesDataService {
         descargados: 35,
         afectados: 70,
         total: 150
-      },
-      porSucursal: [
-        {
-          sucursal: "Sucursal X",
-          estado1: 15,
-          estado2: 12,
-          estado3: 23,
-          total: 50
-        },
-        {
-          sucursal: "Sucursal Y",
-          estado1: 15,
-          estado2: 11,
-          estado3: 24,
-          total: 50
-        },
-        {
-          sucursal: "Sucursal Z",
-          estado1: 15,
-          estado2: 12,
-          estado3: 23,
-          total: 50
-        }
-      ]
+      }
     },
     5: { // Monterrey
       totalVales: 210,
@@ -80,30 +34,7 @@ export class ValesDataService {
         descargados: 90,
         afectados: 50,
         total: 210
-      },
-      porSucursal: [
-        {
-          sucursal: "Monterrey Centro",
-          estado1: 25,
-          estado2: 30,
-          estado3: 15,
-          total: 70
-        },
-        {
-          sucursal: "Monterrey Norte",
-          estado1: 20,
-          estado2: 35,
-          estado3: 15,
-          total: 70
-        },
-        {
-          sucursal: "Monterrey Sur",
-          estado1: 25,
-          estado2: 25,
-          estado3: 20,
-          total: 70
-        }
-      ]
+      }
     }
     // Add more mock data for other states as needed
   };

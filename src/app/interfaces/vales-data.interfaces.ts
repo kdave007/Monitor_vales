@@ -1,10 +1,9 @@
 // Basic Vale record
 export interface ValesStates {
-    id: number;
     estado: 'En Progreso' | 'Descargado' | 'Afectado';
     sucursalOrigen: string;
     sucursalDestino: string;
-    fecha: string;
+    count : number
 }
 
 // Pie Chart Statistics
@@ -28,7 +27,6 @@ export interface StoreStatistics {
 export interface StateSummary {
     totalVales: number;
     porEstado: ChartStatistics;
-    porSucursal: StoreStatistics[];
 }
 
 // API Response wrapper

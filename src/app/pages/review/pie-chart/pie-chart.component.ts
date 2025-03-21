@@ -4,7 +4,7 @@ import ApexCharts from 'apexcharts';
 import { ChartStatistics } from '../../../interfaces/vales-data.interfaces';
 import { ValesDataService } from '../../../services/vales-data.service';
 import { StateManagerService } from '../../../services/state-manager.service';
-import { startWith, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-pie-chart',
@@ -13,7 +13,7 @@ import { startWith, Subject, takeUntil } from 'rxjs';
   templateUrl: './pie-chart.component.html',
   styleUrls: ['./pie-chart.component.scss']
 })
-export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PieChartComponent implements OnInit, OnDestroy {
   @Input() chartId: string = 'chart';
   
   private chart?: ApexCharts;
@@ -24,6 +24,7 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
     afectados: 0,
     total: 0
   };
+  private chartInitialized = false;
 
   constructor(
     private valesService: ValesDataService,
@@ -32,10 +33,6 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
   
   ngOnInit(): void {
     this.subscribeToStateChanges();
-  }
-
-  ngAfterViewInit(): void {
-    this.initializeChart();
   }
 
   ngOnDestroy(): void {
@@ -49,7 +46,6 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscribeToStateChanges(): void {
     this.stateManager.currentState$
       .pipe(
-        startWith({ id: 1, name: 'Jalisco' } as any),
         takeUntil(this.destroy$)
       )
       .subscribe(state => {
@@ -62,8 +58,12 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe(response => {
             if (response.success && response.data) {
               this.chartData = response.data.porEstado;
-              console.log('Checkpoint');
-              this.updateChartData();
+              if (!this.chartInitialized) {
+                this.initializeChart();
+                this.chartInitialized = true;
+              } else {
+                this.updateChartData();
+              }
             }
           });
         }
@@ -75,7 +75,20 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
       chart: {
         type: 'donut',
         height: 450,
-        width: '90%'
+        width: '90%',
+        animations: {
+          enabled: true,
+          easing: 'easeinout',
+          speed: 800,
+          animateGradually: {
+            enabled: true,
+            delay: 150
+          },
+          dynamicAnimation: {
+            enabled: true,
+            speed: 350
+          }
+        }
       },
       series: this.getSeriesData(),
       labels: ['En progreso', 'Descargado', 'Afectado'],
@@ -122,11 +135,10 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getSeriesData(): number[] {
-    const total = this.chartData.total || 1; // Prevent division by zero
     return [
-      Number(((this.chartData.enProgreso / total) * 100).toFixed(2)),
-      Number(((this.chartData.descargados / total) * 100).toFixed(2)),
-      Number(((this.chartData.afectados / total) * 100).toFixed(2))
+      this.chartData.enProgreso,
+      this.chartData.descargados,
+      this.chartData.afectados
     ];
   }
 }
