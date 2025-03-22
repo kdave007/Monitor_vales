@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { PieChartComponent } from './pie-chart/pie-chart.component';
-import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { StoreStatesTableComponent } from './store-states-table/store-states-table.component';
 import { ValesStateTableComponent } from './vales-state-table/vales-state-table.component';
 import { StateManagerService } from '../../services/state-manager.service';
@@ -15,9 +20,14 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
-    PieChartComponent,
-    MatTabsModule,
     FormsModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    PieChartComponent,
     StoreStatesTableComponent,
     ValesStateTableComponent
   ],
@@ -33,6 +43,8 @@ export class ReviewComponent implements OnInit {
   
   selectedStateId = this.states[0].id;
   stateData: StateSummary | null = null;
+  dateRangeType: 'day' | 'month' = 'day';
+  selectedDate: Date = new Date();
 
   constructor(
     private route: ActivatedRoute,
@@ -41,7 +53,6 @@ export class ReviewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Get initial data from resolver
     const resolvedData = this.route.snapshot.data['data'];
     if (resolvedData.initialState.success) {
       this.stateData = resolvedData.initialState.data;
@@ -50,31 +61,40 @@ export class ReviewComponent implements OnInit {
   }
 
   onStateChange(event: any) {
-    this.selectedStateId = parseInt(event.target.value);
-    const newState = this.states.find(state => state.id === this.selectedStateId);
-    if (newState) {
-      this.stateManager.updateState(newState);
-      this.loadStateData();
-    }
-  }
-
-  private loadStateData() {
-    const currentState = this.currentState;
-    if (currentState) {
-      this.valesData.getStateData({ 
-        id: currentState.id, 
-        name: currentState.name
-      }).subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.stateData = response.data;
-          }
+    const selectedState = this.states.find(state => state.id === +event.target.value);
+    if (selectedState) {
+      this.stateManager.updateState(selectedState);
+      this.valesData.getStateData(selectedState).subscribe(response => {
+        if (response.success) {
+          this.stateData = response.data;
         }
       });
     }
   }
 
-  get currentState() {
-    return this.states.find(state => state.id === this.selectedStateId);
+  onDateRangeTypeChange(type: 'day' | 'month') {
+    this.dateRangeType = type;
+    // Reset date to start of month if switching to month view
+    if (type === 'month') {
+      this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), 1);
+    }
+    this.fetchData();
+  }
+
+  onDateChange(event: any) {
+    this.selectedDate = event.value;
+    this.fetchData();
+  }
+
+  private fetchData() {
+    const selectedState = this.states.find(state => state.id === this.selectedStateId);
+    if (selectedState) {
+      // Here you would add the date parameters to your API call
+      this.valesData.getStateData(selectedState).subscribe(response => {
+        if (response.success) {
+          this.stateData = response.data;
+        }
+      });
+    }
   }
 }
