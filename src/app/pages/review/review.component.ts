@@ -14,6 +14,7 @@ import { StateManagerService } from '../../services/state-manager.service';
 import { ValesDataService } from '../../services/vales-data.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
 import { ActivatedRoute } from '@angular/router';
+import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
 
 @Component({
   selector: 'app-review',
@@ -29,7 +30,8 @@ import { ActivatedRoute } from '@angular/router';
     MatSelectModule,
     PieChartComponent,
     StoreStatesTableComponent,
-    ValesStateTableComponent
+    ValesStateTableComponent,
+    FetchFilterComponent
   ],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
