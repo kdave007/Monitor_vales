@@ -63,15 +63,15 @@ export class ReviewComponent implements OnInit {
   }
 
   onStateChange(event: any) {
-    const selectedState = this.states.find(state => state.id === +event.target.value);
-    if (selectedState) {
-      this.stateManager.updateState(selectedState);
-      this.valesData.getStateData(selectedState).subscribe(response => {
-        if (response.success) {
-          this.stateData = response.data;
-        }
-      });
-    }
+    // const selectedState = this.states.find(state => state.id === +event.target.value);
+    // if (selectedState) {
+    //   this.stateManager.updateState(selectedState);
+    //   this.valesData.getStateData(selectedState).subscribe(response => {
+    //     if (response.success) {
+    //       this.stateData = response.data;
+    //     }
+    //   });
+    // }
   }
 
 

@@ -21,6 +21,8 @@ export class FetchFilterComponent {
 
   selectedView: 'day' | 'month' = 'day';
   selectedDate: Date = new Date();
+
+  
   showPicker = false;
   
   // For month picker
@@ -45,7 +47,6 @@ export class FetchFilterComponent {
   selectMonth(monthIndex: number) {
     this.selectedMonth = monthIndex;
     this.selectedDate = new Date(this.selectedYear, monthIndex, 1);
-    console.log(this.selectedDate)
     this.showPicker = false;
   }
 
@@ -65,7 +66,6 @@ export class FetchFilterComponent {
 
   selectDay(day: number) {
     this.selectedDate = new Date(this.selectedYear, this.selectedMonth, day);
-    console.log(this.selectedDate)
     this.showPicker = false;
   }
 
@@ -76,12 +76,9 @@ export class FetchFilterComponent {
            today.getFullYear() === this.selectedYear;
   }
 
-  generateDateRange() {
-    
-  }
-
   update() {
+    //send both variables to the service
     console.log(this.selectedDate)
-    
+    console.log(this.selectedView)
   }
 }
