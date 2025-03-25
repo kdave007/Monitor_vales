@@ -74,19 +74,6 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-  onDateRangeTypeChange(type: 'day' | 'month') {
-    this.dateRangeType = type;
-    // Reset date to start of month if switching to month view
-    if (type === 'month') {
-      this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), 1);
-    }
-    this.fetchData();
-  }
-
-  onDateChange(event: any) {
-    this.selectedDate = event.value;
-    this.fetchData();
-  }
 
   private fetchData() {
     const selectedState = this.states.find(state => state.id === this.selectedStateId);

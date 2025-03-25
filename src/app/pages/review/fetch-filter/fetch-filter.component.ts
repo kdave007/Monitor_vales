@@ -18,6 +18,7 @@ registerLocaleData(localeEs, 'es');
   providers: [{ provide: LOCALE_ID, useValue: 'es' }]
 })
 export class FetchFilterComponent {
+
   selectedView: 'day' | 'month' = 'day';
   selectedDate: Date = new Date();
   showPicker = false;
@@ -44,6 +45,7 @@ export class FetchFilterComponent {
   selectMonth(monthIndex: number) {
     this.selectedMonth = monthIndex;
     this.selectedDate = new Date(this.selectedYear, monthIndex, 1);
+    console.log(this.selectedDate)
     this.showPicker = false;
   }
 
@@ -63,6 +65,7 @@ export class FetchFilterComponent {
 
   selectDay(day: number) {
     this.selectedDate = new Date(this.selectedYear, this.selectedMonth, day);
+    console.log(this.selectedDate)
     this.showPicker = false;
   }
 
@@ -71,5 +74,14 @@ export class FetchFilterComponent {
     return today.getDate() === day &&
            today.getMonth() === this.selectedMonth &&
            today.getFullYear() === this.selectedYear;
+  }
+
+  generateDateRange() {
+    
+  }
+
+  update() {
+    console.log(this.selectedDate)
+    
   }
 }
