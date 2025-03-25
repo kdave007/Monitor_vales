@@ -2,6 +2,9 @@ import { Component, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+import { StateSummary } from '../../../interfaces/vales-data.interfaces';
+import { StateManagerService } from '../../../services/state-manager.service';
+import { ValesDataService } from '../../../services/vales-data.service';
 
 // Register Spanish locale
 registerLocaleData(localeEs, 'es');
@@ -22,7 +25,17 @@ export class FetchFilterComponent {
   selectedView: 'day' | 'month' = 'day';
   selectedDate: Date = new Date();
 
-  
+  states = [
+    { id: 1, name: 'Jalisco' },
+    { id: 2, name: 'Ciudad de México' },
+    { id: 5, name: 'Monterrey' }
+  ];
+  selectedStateId = this.states[0].id;
+  stateData: StateSummary | null = null;
+
+  selectedState = this.states[0];
+
+
   showPicker = false;
   
   // For month picker
@@ -33,6 +46,22 @@ export class FetchFilterComponent {
   currentYear = new Date().getFullYear();
   selectedMonth = new Date().getMonth();
   selectedYear = this.currentYear;
+
+  constructor(
+    private stateManager: StateManagerService,
+    private valesData: ValesDataService
+  ){}
+
+  onStateChange(event: any) {
+    console.log(event.target.value)
+    const found = this.states.find(state => state.id === +event.target.value);
+    
+    if (found) {
+      console.log("TEST",this.selectedState)
+      this.selectedState = found;
+      
+    }
+  }
 
   onViewChange(view: 'day' | 'month') {
     this.selectedView = view;
@@ -78,6 +107,12 @@ export class FetchFilterComponent {
 
   update() {
     //send both variables to the service
+    this.stateManager.updateState(this.selectedState);
+      this.valesData.getStateData(this.selectedState).subscribe(response => {
+        if (response.success) {
+          this.stateData = response.data;
+        }
+      });
     console.log(this.selectedDate)
     console.log(this.selectedView)
   }

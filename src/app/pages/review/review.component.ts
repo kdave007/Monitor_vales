@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { StoreStatesTableComponent } from './store-states-table/store-states-table.component';
 import { ValesStateTableComponent } from './vales-state-table/vales-state-table.component';
 import { StateManagerService } from '../../services/state-manager.service';
-import { ValesDataService } from '../../services/vales-data.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
@@ -22,12 +15,6 @@ import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
   imports: [
     CommonModule,
     FormsModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     PieChartComponent,
     StoreStatesTableComponent,
     ValesStateTableComponent,
@@ -45,13 +32,11 @@ export class ReviewComponent implements OnInit {
   
   selectedStateId = this.states[0].id;
   stateData: StateSummary | null = null;
-  dateRangeType: 'day' | 'month' = 'day';
-  selectedDate: Date = new Date();
+
 
   constructor(
     private route: ActivatedRoute,
-    private stateManager: StateManagerService,
-    private valesData: ValesDataService
+    private stateManager: StateManagerService
   ) {}
 
   ngOnInit() {
@@ -62,28 +47,4 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-  onStateChange(event: any) {
-    // const selectedState = this.states.find(state => state.id === +event.target.value);
-    // if (selectedState) {
-    //   this.stateManager.updateState(selectedState);
-    //   this.valesData.getStateData(selectedState).subscribe(response => {
-    //     if (response.success) {
-    //       this.stateData = response.data;
-    //     }
-    //   });
-    // }
-  }
-
-
-  private fetchData() {
-    const selectedState = this.states.find(state => state.id === this.selectedStateId);
-    if (selectedState) {
-      // Here you would add the date parameters to your API call
-      this.valesData.getStateData(selectedState).subscribe(response => {
-        if (response.success) {
-          this.stateData = response.data;
-        }
-      });
-    }
-  }
 }
