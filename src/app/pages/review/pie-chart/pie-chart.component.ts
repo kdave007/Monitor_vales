@@ -39,7 +39,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Initialize with data if available
   
-    this.subscribeToStateChanges();
+    //this.subscribeToStateChanges();
     this.subscribeToFilterParams();
   }
 
@@ -51,35 +51,35 @@ export class PieChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private subscribeToStateChanges(): void {
-    this.stateManager.currentState$
-      .pipe(
-        takeUntil(this.destroy$)
-      )
-      .subscribe(state => {
-        if (state) {
-          this.valesService.getStateData({ 
-            id: state.id, 
-            name: state.name 
-          })
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(response => {
-            if (response.success && response.data) {
-              console.log('State service response : ',response.data);
-              this.chartData = response.data.porEstado;
-              if (!this.chartInitialized) {
+  // private subscribeToStateChanges(): void {
+  //   this.stateManager.currentState$
+  //     .pipe(
+  //       takeUntil(this.destroy$)
+  //     )
+  //     .subscribe(state => {
+  //       if (state) {
+  //         this.valesService.getStateData({ 
+  //           id: state.id, 
+  //           name: state.name 
+  //         })
+  //         .pipe(takeUntil(this.destroy$))
+  //         .subscribe(response => {
+  //           if (response.success && response.data) {
+  //             console.log('State service response : ',response.data);
+  //             this.chartData = response.data.porEstado;
+  //             if (!this.chartInitialized) {
              
-                this.initializeChart();
-                this.chartInitialized = true;
-              } else {
-                this.updateChartData();
-              }
-              this.isLoading = false;
-            }
-          });
-        }
-      });
-  }
+  //               this.initializeChart();
+  //               this.chartInitialized = true;
+  //             } else {
+  //               this.updateChartData();
+  //             }
+  //             this.isLoading = false;
+  //           }
+  //         });
+  //       }
+  //     });
+  // }
 
   private subscribeToFilterParams(): void {
     this.filterFetchService.currentParams$
@@ -99,15 +99,15 @@ export class PieChartComponent implements OnInit, OnDestroy {
             if (response.success && response.data) {
               console.log('Filter params service response : ',response.data);
   
-              // this.chartData = response.data.porEstado;
-              // if (!this.chartInitialized) {
+              this.chartData = response.data.porEstado;
+              if (!this.chartInitialized) {
              
-              //   this.initializeChart();
-              //   this.chartInitialized = true;
-              // } else {
-              //   this.updateChartData();
-              // }
-              //this.isLoading = false;
+                this.initializeChart();
+                this.chartInitialized = true;
+              } else {
+                this.updateChartData();
+              }
+              this.isLoading = false;
             }
           });
         }

@@ -44,3 +44,10 @@ export interface StateFilter {
     date?: string;
     date_type?: string;
 }
+
+export interface FilterParams {
+    id: number;
+    name: string;
+    date: string;
+    date_type : string;
+  }

@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { FilterParams } from '../interfaces/vales-data.interfaces';
 
-interface FilterParams {
-  id: number;
-  name: string;
-  date: string;
-  date_type : string;
-}
+
 
 @Injectable({
   providedIn: 'root'

@@ -14,7 +14,9 @@ export const reviewResolver: ResolveFn<ReviewData> = async (route, state) => {
   // Get initial state data (Jalisco)
   const initialState = await firstValueFrom(valesService.getStateData({ 
     id: 1, 
-    name: 'Jalisco' 
+    name: 'Jalisco' ,
+    date: new Date().toISOString().split('T')[0],
+    date_type: 'd'
   }));
 
   return {

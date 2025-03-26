@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, delay } from 'rxjs';
-import { ApiResponse, StateSummary, StateFilter } from '../interfaces/vales-data.interfaces';
+import { ApiResponse, StateSummary, FilterParams, StateFilter } from '../interfaces/vales-data.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -42,12 +42,11 @@ export class ValesDataService {
   constructor(private http: HttpClient) {}
 
   // Method to get data for a specific state
-  getStateData(filter: StateFilter): Observable<ApiResponse<StateSummary>> {
+  getStateData(filterParams: FilterParams): Observable<ApiResponse<StateSummary>> {
     // Simulate API call with delay
-    console.log(" Service exe")
     return of({
       success: true,
-      data: this.mockData[filter.id] || {
+      data: this.mockData[filterParams.id] || {
         totalVales: 0,
         porEstado: { enProgreso: 0, descargados: 0, afectados: 0, total: 0 },
         porSucursal: []
@@ -59,17 +58,17 @@ export class ValesDataService {
   }
 
   // Method to refresh data (will be used when we have real API)
-  refreshData(filter: StateFilter): Observable<ApiResponse<StateSummary>> {
+  refreshData(filterParams: FilterParams): Observable<ApiResponse<StateSummary>> {
     // In real implementation, this would invalidate cache and make a new request
-    return this.getStateData(filter);
+    return this.getStateData(filterParams);
   }
 
   // Add error simulation for testing
-  private simulateError(filter: StateFilter): Observable<ApiResponse<StateSummary>> {
+  private simulateError(filterParams: FilterParams): Observable<ApiResponse<StateSummary>> {
     return of({
       success: false,
       data: null as any,
-      error: `Failed to fetch data for state ${filter.name}`,
+      error: `Failed to fetch data for state ${filterParams.name}`,
       timestamp: new Date().toISOString()
     }).pipe(
       delay(800)

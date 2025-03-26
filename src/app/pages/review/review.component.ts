@@ -8,6 +8,7 @@ import { StateManagerService } from '../../services/state-manager.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
+import { FilterFetchService } from '../../services/filter-fetch.service';
 
 @Component({
   selector: 'app-review',
@@ -18,7 +19,8 @@ import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
     PieChartComponent,
     StoreStatesTableComponent,
     ValesStateTableComponent,
-    FetchFilterComponent
+    FetchFilterComponent,
+    
   ],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
@@ -36,14 +38,18 @@ export class ReviewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private stateManager: StateManagerService
+    private stateManager: StateManagerService,
+    private filterFetchService : FilterFetchService
   ) {}
 
   ngOnInit() {
     const resolvedData = this.route.snapshot.data['data'];
     if (resolvedData.initialState.success) {
       this.stateData = resolvedData.initialState.data;
-      this.stateManager.updateState(this.states[0]);
+      this.filterFetchService.updateState({id: 1, 
+        name: 'Jalisco' ,
+        date: new Date().toISOString().split('T')[0],
+        date_type: 'd'});
     }
   }
 
