@@ -6,6 +6,7 @@ import { ChartStatistics } from '../../../interfaces/vales-data.interfaces';
 import { ValesDataService } from '../../../services/vales-data.service';
 import { StateManagerService } from '../../../services/state-manager.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FilterFetchService } from '../../../services/filter-fetch.service';
 
 @Component({
   selector: 'app-pie-chart',
@@ -31,13 +32,15 @@ export class PieChartComponent implements OnInit, OnDestroy {
 
   constructor(
     private valesService: ValesDataService,
-    private stateManager: StateManagerService
+    private stateManager: StateManagerService,
+    private filterFetchService : FilterFetchService
   ) {}
   
   ngOnInit(): void {
     // Initialize with data if available
   
     this.subscribeToStateChanges();
+    this.subscribeToFilterParams();
   }
 
   ngOnDestroy(): void {
@@ -62,7 +65,7 @@ export class PieChartComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe(response => {
             if (response.success && response.data) {
-  
+              console.log('State service response : ',response.data);
               this.chartData = response.data.porEstado;
               if (!this.chartInitialized) {
              
@@ -72,6 +75,39 @@ export class PieChartComponent implements OnInit, OnDestroy {
                 this.updateChartData();
               }
               this.isLoading = false;
+            }
+          });
+        }
+      });
+  }
+
+  private subscribeToFilterParams(): void {
+    this.filterFetchService.currentParams$
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe(filterParams => {
+        if (filterParams) {
+          this.valesService.getStateData({ 
+            id: filterParams.id, 
+            name: filterParams.name,
+            date : filterParams.date,
+            date_type : filterParams.date_type 
+          })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(response => {
+            if (response.success && response.data) {
+              console.log('Filter params service response : ',response.data);
+  
+              // this.chartData = response.data.porEstado;
+              // if (!this.chartInitialized) {
+             
+              //   this.initializeChart();
+              //   this.chartInitialized = true;
+              // } else {
+              //   this.updateChartData();
+              // }
+              //this.isLoading = false;
             }
           });
         }

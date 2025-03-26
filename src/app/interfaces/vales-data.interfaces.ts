@@ -41,6 +41,6 @@ export interface ApiResponse<T> {
 export interface StateFilter {
     id: number;
     name: string;
-    startDate?: string;
-    endDate?: string;
+    date?: string;
+    date_type?: string;
 }

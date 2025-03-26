@@ -18,8 +18,8 @@ export class FilterFetchService {
    currentParams$ = this.currentParamsSubject.asObservable();
 
 
-  updateState(state: FilterParams,) {
-    this.currentParamsSubject.next(state);
+  updateState(FilterParams: FilterParams,) {
+    this.currentParamsSubject.next(FilterParams);
   }
 
   getCurrentState(): FilterParams | null {

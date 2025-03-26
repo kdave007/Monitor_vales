@@ -5,6 +5,7 @@ import localeEs from '@angular/common/locales/es';
 import { StateSummary } from '../../../interfaces/vales-data.interfaces';
 import { StateManagerService } from '../../../services/state-manager.service';
 import { ValesDataService } from '../../../services/vales-data.service';
+import { FilterFetchService } from '../../../services/filter-fetch.service';
 
 // Register Spanish locale
 registerLocaleData(localeEs, 'es');
@@ -49,7 +50,7 @@ export class FetchFilterComponent {
 
   constructor(
     private stateManager: StateManagerService,
-    private valesData: ValesDataService
+    private filterFetchService : FilterFetchService
   ){}
 
   onStateChange(event: any) {
@@ -108,6 +109,13 @@ export class FetchFilterComponent {
   update() {
     //send both variables to the service
     this.stateManager.updateState(this.selectedState);
+    
+    this.filterFetchService.updateState({
+      id: this.selectedState.id,
+      name: this.selectedState.name,
+      date : this.selectedDate+'',
+      date_type : 'm'
+    });
     // this.valesData.getStateData(this.selectedState).subscribe(response => {
     //   if (response.success) {
     //     this.stateData = response.data;
