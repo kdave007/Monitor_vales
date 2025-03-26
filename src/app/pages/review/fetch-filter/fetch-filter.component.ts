@@ -108,11 +108,11 @@ export class FetchFilterComponent {
   update() {
     //send both variables to the service
     this.stateManager.updateState(this.selectedState);
-      this.valesData.getStateData(this.selectedState).subscribe(response => {
-        if (response.success) {
-          this.stateData = response.data;
-        }
-      });
+    // this.valesData.getStateData(this.selectedState).subscribe(response => {
+    //   if (response.success) {
+    //     this.stateData = response.data;
+    //   }
+    // });
     console.log(this.selectedDate)
     console.log(this.selectedView)
   }

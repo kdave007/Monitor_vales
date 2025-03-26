@@ -6,6 +6,8 @@ interface State {
   name: string;
 }
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +19,7 @@ export class StateManagerService {
   currentState$ = this.currentStateSubject.asObservable();
 
   // Method to update the state
-  updateState(state: State) {
+  updateState(state: State,) {
     this.currentStateSubject.next(state);
   }
 

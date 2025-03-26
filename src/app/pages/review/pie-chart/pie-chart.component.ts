@@ -62,8 +62,10 @@ export class PieChartComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe(response => {
             if (response.success && response.data) {
+  
               this.chartData = response.data.porEstado;
               if (!this.chartInitialized) {
+             
                 this.initializeChart();
                 this.chartInitialized = true;
               } else {

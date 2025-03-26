@@ -44,6 +44,7 @@ export class ValesDataService {
   // Method to get data for a specific state
   getStateData(filter: StateFilter): Observable<ApiResponse<StateSummary>> {
     // Simulate API call with delay
+    console.log(" Service exe")
     return of({
       success: true,
       data: this.mockData[filter.id] || {
