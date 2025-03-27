@@ -34,7 +34,7 @@ export class StatusDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.sidebarSub = this.sidebarService.isCollapsed$.subscribe(isCollapsed => {
-      this.popupMarginLeft = isCollapsed ? `64px` : '283px';
+      this.popupMarginLeft = isCollapsed ? `-64px` : '-283px';
       console.log(this.popupMarginLeft)
     });
   }
