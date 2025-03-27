@@ -46,17 +46,17 @@ export class BarChartComponent implements OnInit, AfterViewInit {
       },
       series: [{
         data: [{
-          x: 'category A',
+          x: 'Sucursal A',
           y: 10
         }, {
-          x: 'category B',
+          x: 'Sucursal B',
           y: 18
         }, {
-          x: 'category C',
+          x: 'Sucursal C',
           y: 13
         },
        {
-        x: 'category D',
+        x: 'Sucursal D',
         y: 18
        }
       ]

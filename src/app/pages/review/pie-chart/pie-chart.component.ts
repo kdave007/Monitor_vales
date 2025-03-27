@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import ApexCharts from 'apexcharts';
 import { ChartStatistics } from '../../../interfaces/vales-data.interfaces';
 import { ValesDataService } from '../../../services/vales-data.service';
-import { StateManagerService } from '../../../services/state-manager.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FilterFetchService } from '../../../services/filter-fetch.service';
 
@@ -32,7 +31,6 @@ export class PieChartComponent implements OnInit, OnDestroy {
 
   constructor(
     private valesService: ValesDataService,
-    private stateManager: StateManagerService,
     private filterFetchService : FilterFetchService
   ) {}
   

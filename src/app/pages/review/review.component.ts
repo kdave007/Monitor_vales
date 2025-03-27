@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import { StoreStatesTableComponent } from './store-states-table/store-states-table.component';
 import { ValesStateTableComponent } from './vales-state-table/vales-state-table.component';
-import { StateManagerService } from '../../services/state-manager.service';
 import { StateSummary } from '../../interfaces/vales-data.interfaces';
 import { ActivatedRoute } from '@angular/router';
 import { FetchFilterComponent } from './fetch-filter/fetch-filter.component';
@@ -19,8 +18,7 @@ import { FilterFetchService } from '../../services/filter-fetch.service';
     PieChartComponent,
     StoreStatesTableComponent,
     ValesStateTableComponent,
-    FetchFilterComponent,
-    
+    FetchFilterComponent
   ],
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
@@ -38,7 +36,6 @@ export class ReviewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private stateManager: StateManagerService,
     private filterFetchService : FilterFetchService
   ) {}
 
