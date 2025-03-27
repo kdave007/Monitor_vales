@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { ValesStateTableService } from '../../../services/vales-state-table.service';
@@ -19,7 +19,7 @@ interface TableRow {
   templateUrl: './vales-state-table.component.html',
   styleUrls: ['./vales-state-table.component.scss']
 })
-export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ValesStateTableComponent implements OnInit, OnDestroy {
   // Sample data
   tableData: TableRow[] = [];
 
@@ -33,9 +33,7 @@ export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit(): void {
     this.fetchFilterSuscription();
   }
-  ngAfterViewInit(): void {
-    
-  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -78,7 +76,6 @@ export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestro
   private fetchFilterSuscription(){
     this.filterFetchService.currentParams$
     .pipe(
-      //startWith({ id: 1, name: 'Jalisco' }),
       takeUntil(this.destroy$)
     )
     .subscribe( filterParams => {
