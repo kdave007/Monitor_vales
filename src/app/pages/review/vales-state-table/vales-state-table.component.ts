@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StateManagerService } from '../../../services/state-manager.service';
-import { startWith, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { ValesStateTableService } from '../../../services/vales-state-table.service';
+import { FilterFetchService } from '../../../services/filter-fetch.service';
 
 
 interface TableRow {
@@ -27,11 +27,11 @@ export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestro
 
   constructor(
     private valesStateTable: ValesStateTableService,
-    private stateManager: StateManagerService
+    private filterFetchService : FilterFetchService
   ){}
 
   ngOnInit(): void {
-    this.stateDataSuscription();
+    this.fetchFilterSuscription();
   }
   ngAfterViewInit(): void {
     
@@ -52,16 +52,44 @@ export class ValesStateTableComponent implements OnInit, AfterViewInit, OnDestro
   }
 
 
-  private stateDataSuscription(){
-    this.stateManager.currentState$
+  // private stateDataSuscription(){
+  //   this.stateManager.currentState$
+  //   .pipe(
+  //     //startWith({ id: 1, name: 'Jalisco' }),
+  //     takeUntil(this.destroy$)
+  //   )
+  //   .subscribe( state => {
+  //     console.log('vales table ',state)
+  //     if(state){
+  //       this.valesStateTable.getStateData(state.id)
+  //       .pipe(
+  //         takeUntil(this.destroy$)
+  //       )
+  //       .subscribe( response => {
+  //         if(response.success) {
+  //           this.tableData = response.data;
+  //           console.log(response.data)
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+
+  private fetchFilterSuscription(){
+    this.filterFetchService.currentParams$
     .pipe(
       //startWith({ id: 1, name: 'Jalisco' }),
       takeUntil(this.destroy$)
     )
-    .subscribe( state => {
-      console.log('vales table ',state)
-      if(state){
-        this.valesStateTable.getStateData(state.id)
+    .subscribe( filterParams => {
+      console.log('vales table ',filterParams)
+      if(filterParams){
+        this.valesStateTable.getStateData({ 
+          id: filterParams.id, 
+          name: filterParams.name,
+          date : filterParams.date,
+          date_type : filterParams.date_type 
+        })
         .pipe(
           takeUntil(this.destroy$)
         )

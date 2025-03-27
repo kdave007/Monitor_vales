@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ValesStates } from '../interfaces/vales-data.interfaces';
+import { ValesStates, FilterParams } from '../interfaces/vales-data.interfaces';
 import { Observable, of, delay } from 'rxjs';
 
 @Injectable({
@@ -26,8 +26,8 @@ export class ValesStateTableService {
 
   constructor() { }
 
-  getStateData(stateId: number): Observable<{ success: boolean; data: ValesStates[] }> {
-    const response = this.mockData[stateId] ? { success: true, data: this.mockData[stateId]} : { success: false, data: []};
+  getStateData(filterParams : FilterParams): Observable<{ success: boolean; data: ValesStates[] }> {
+    const response = this.mockData[filterParams.id] ? { success: true, data: this.mockData[filterParams.id]} : { success: false, data: []};
     return of(response).pipe(delay(800));
   }
 

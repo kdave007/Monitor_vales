@@ -4,7 +4,6 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { StateSummary } from '../../../interfaces/vales-data.interfaces';
 import { StateManagerService } from '../../../services/state-manager.service';
-import { ValesDataService } from '../../../services/vales-data.service';
 import { FilterFetchService } from '../../../services/filter-fetch.service';
 
 // Register Spanish locale
